@@ -1,0 +1,167 @@
+.landing-page-container{
+    height: 100%;
+}
+.landing-page-container-1 {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 30px;
+    justify-content: center;
+    align-items: center;
+}
+.loading {
+   position: absolute;
+   top: 40%;
+   left: 50%;
+   transform: translate(-50%,-50%);
+}
+.geolocation {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 490px;
+    height: 200px;
+    border-radius: 20px;
+    margin: 0px 30px 30px 0;
+    margin-right: 0;
+    padding: 20px;
+    box-shadow: inset 5px 5px 15px  rgba(0,0,0,0.3),inset -5px -5px 15px rgba(255,255,255,0.3);
+}
+
+.geolocation svg {
+    width: 200px;
+}
+
+.geolocation .city h1 {
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.geolocation .city .date-time p {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.geolocation .degree p  {
+    text-align: left;
+    font-size: 50px;
+    font-weight: 700;
+    margin-top: 30px;
+    margin-bottom: 0;
+}
+
+
+.weather-outlook {
+    position: relative;
+    width: 600px;
+    height: 200px;
+    border-radius: 20px;
+    margin: 0px 0 30px 30px;
+    padding: 20px;
+    box-shadow: inset 5px 5px 15px  rgba(0,0,0,0.3),inset -5px -5px 15px rgba(255,255,255,0.3);
+}
+
+.header {
+    margin-top: 0;
+    margin-bottom: 30px;
+    text-align: left;
+    color:     rgba(98, 207, 244, 1) ;
+}
+
+.outlook-time-degree {
+    display: flex;
+    text-align: left;
+    justify-content: space-between;
+}
+
+.hourly-details{
+    border-right: solid 1px grey;
+    padding-right: 20px;
+}
+
+.hourly-details:last-child {
+    border: none;
+    padding: 0;
+}
+
+.hourly-details h6 {
+    font-weight: 800;
+    margin-top: 0;
+}
+
+.hourly-details h4 {
+    font-weight: 800;
+    margin-bottom: 0;
+}
+
+.other-outlook-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 30px;
+}
+
+.other-outlook-info h6 {
+    margin: 0;
+    font-weight: 800;
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.other-outlook-info h4 {
+    text-align: left;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    font-weight: 800;
+}
+
+.landing-page-container-2 {
+    display: flex;
+}
+
+.current-weather-condition {
+    position: relative;
+    width: 400px;
+    height: 150px;
+    border-radius: 20px;
+    margin: 0px 30px 0px 0px;
+    padding: 20px;
+    box-shadow: inset 5px 5px 15px  rgba(0,0,0,0.3),inset -5px -5px 15px rgba(255,255,255,0.3);
+}
+
+.outlook-two{
+    margin-top: 15px;
+
+}
+
+.header2 {
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: left;
+    color:     rgba(98, 207, 244, 1) ;
+}
+
+.future-forecast {
+    position: relative;
+    width: 310px;
+    height: 150px;
+    border-radius: 20px;
+    margin: 0px 0px 0px 0px;
+    padding: 20px;
+    box-shadow: inset 5px 5px 15px  rgba(0,0,0,0.3),inset -5px -5px 15px rgba(255,255,255,0.3);
+}
+
+.future-forecast:last-child {
+    margin: 0px 0px 0px 30px;
+}
+
+.humidity {
+    margin-left: 20px;
+}
+.max-wind {
+    margin-right: 10px;
+}

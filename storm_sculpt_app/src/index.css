@@ -1,0 +1,34 @@
+body {
+  margin: 0;
+  font-family: Mulish;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(240, 239, 239);
+  
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+@font-face {
+  font-family: Mulish;
+  src: url(../src/assets/fonts/Mulish/Mulish-VariableFont_wght.ttf);
+}
+
+
+@font-face {
+  font-family: Mulish-b;
+  src: url(../src/assets/fonts/Mulish/static/Mulish-Bold.ttf);
+}
+
+@font-face {
+  font-family: Mulish-m;
+  src: url(../src/assets/fonts/Mulish/static/Mulish-Medium.ttf);
+}
+
+@font-face {
+  font-family: Mulish-r;
+  src: url(../src/assets/fonts/Mulish/static/Mulish-Light.ttf);
+}
