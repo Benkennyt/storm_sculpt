@@ -67,7 +67,7 @@
 
 .navbar ul {
   display: flex;
-  width: 500px;
+  width: 400px;
   margin-left: 0;
   padding-left: 0;
   margin-right: 50px;
@@ -79,6 +79,9 @@
   text-decoration: none;
   color: rgb(56, 55, 55);
   font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .search-suggestions{
@@ -132,3 +135,39 @@
   text-transform: lowercase;
 }
 
+.settings-btn{
+  width: 500px;
+  display: flex;
+  justify-content: left;
+}
+
+.settings-btn button {
+  border: none;
+  background-color: transparent;
+}
+
+.settings-btn button:active{
+  animation: roll .3s ease-in-out  forwards;
+  -webkit-animation: roll .3s ease-in-out  forwards ;
+}
+
+.settings-btn svg {
+  width: 24px;
+  cursor: pointer;
+  transform:d ;
+}
+
+
+@keyframes roll {
+  0%{transform: rotate(0deg)}
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes roll {
+  0%{transform: rotate(0deg)}
+  100% {
+    transform: rotate(360deg);
+  }
+}

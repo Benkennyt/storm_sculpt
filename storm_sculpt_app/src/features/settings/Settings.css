@@ -1,0 +1,109 @@
+.settings-container {
+    position: absolute;
+    width: 100%;
+    height: 150px;
+    background-color: rgba(255, 255, 255, 0.994);
+    border-top: 2px solid rgb(203, 200, 200);
+    z-index: 5;
+    transition: all ease-in-out 2s;
+    box-shadow: 0 4px 5px -2px rgba(0, 0, 0, 0.2);
+}
+
+
+.settings-container-hidden {
+    position: absolute;
+    width: 100%;
+    height: 0;
+    background-color: rgba(2, 2, 2, 0.797);
+    z-index: 5;
+    transition: all ease-in-out 2s;
+}
+
+.settings-container h2 {
+    margin: 0;
+}
+
+.all-switch {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30px 0 30px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+}
+
+.switch-for {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.switch-for h3 {
+    margin-bottom: 10px;
+}
+
+.switch label {
+    width: 300px;
+    height: 50px;
+    display: block;
+    position: relative;
+    background:rgba(98, 207, 244, 1) ;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.switch label:after {
+    content: '';
+    width: 142px;
+    height: 42px;
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    background: white;
+    border-radius: 3px;
+    box-shadow: rgba(6, 6, 6, 0.2) 3px 3px 6px 0px inset, rgba(0, 0, 0, 0.2) -3px -3px 6px 1px inset;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.switch input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    visibility: hidden;
+}
+
+.switch input:checked + .switch label {
+    background-color: #242424;
+}
+.switch input:checked + label:after {
+    transform: translateX(106%);
+}
+
+.switch label:active:after {
+    width: 40px;
+}
+
+.switch-btn-name {
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+    z-index: 6;
+}
+
+.switch-btn-name .name-dv h3 {
+    margin: auto;
+ 
+}
+
+.name-dv {
+    width: 100%;
+    display: flex;
+}
+

@@ -1,14 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef , useState} from "react";
 import "./LandingPage.css";
 import Nav from "./Nav";
-import { SunIcon } from "../../assets/icons/SVG";
+import { LogoCloudIcon, SunIcon } from "../../assets/icons/SVG";
 import { fetchRealTimeWeather, fetchIPDetails} from "../../app/api/apiSlice2";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../app/stores/store";
+import WeatherIcon from "./WeatherIcon";
+import Loading from "../../app/general/Loading";
+import Settings from "../settings/Settings";
 
 
 
 const LandingPage = () => {
+  const [tempIsToggled, setTempIsToggled] = useState(false);
+  const [windIsToggled, setWindIsToggled] = useState(false);
+  const [visIsToggled, setVisIsToggled] = useState(false);
+
 
   const dispatch = useAppDispatch()
   const {data, isIPLoading,isRealTWLoading} = useSelector((state:any) => state.WeatherDetails)
@@ -42,7 +49,7 @@ const LandingPage = () => {
   }
 
   const getDailyDetails = () => {
-    if(realTdata?.forecast ) {
+    if(realTdata && realTdata.forecast && realTdata.forecast.forecastday ) {
         return realTdata.forecast
     } else {
       return null
@@ -50,16 +57,23 @@ const LandingPage = () => {
   }
 
 
+  console.log(getDailyDetails()?.forecastday?.map().day.avgtemp_c)
 
-  console.log(getDailyDetails()?.forecastday[0]?.day?.avgtemp_c)
   
   return (
     <div className="landing-page-container">
       <Nav />
-      
+      <Settings 
+        tempIsToggled={tempIsToggled} 
+        onToggleTemp={() => setTempIsToggled(!tempIsToggled)}
+        windIsToggled={windIsToggled} 
+        onToggleWind={() => setWindIsToggled(!windIsToggled)}
+        visIsToggled={visIsToggled} 
+        onToggleVis={() => setVisIsToggled(!visIsToggled)}
+        />
       <div className="landing-page-container-1">
         <div className="geolocation">
-          {isIPLoading || isRealTWLoading ? <h2 className="loading">Loading...</h2> : 
+          {isIPLoading || isRealTWLoading ? <Loading/> : 
           <>
             <div className="city">
               <h1>{realTdata?.location?.name ? `${realTdata?.location?.name}` : null}{realTdata?.location?.country  ? ',' : null} 
@@ -74,7 +88,8 @@ const LandingPage = () => {
                 </div>
               </div>
               <div className="degree">
-                <p>{realTdata && realTdata.current ? `${realTdata.current.temp_c}°C` : null}</p>
+                {tempIsToggled ? <p>{realTdata && realTdata.current ? `${realTdata.current.temp_f}°F` : null}</p> :
+                <p>{realTdata && realTdata.current ? `${realTdata.current.temp_c}°C` : null}</p>}
               </div>
             </div>
             <SunIcon />
@@ -83,7 +98,8 @@ const LandingPage = () => {
 
 
         <div className="weather-outlook">
-          {isIPLoading || isRealTWLoading ? <h2 className="loading">Loading...</h2> :
+          {isIPLoading || isRealTWLoading ? 
+            <Loading/> :
             <>
               <h4 className="header">Weather's Outlook</h4><div className="outlook-time-degree">
 
@@ -91,7 +107,7 @@ const LandingPage = () => {
                   return (
                     <div key={index} className="hourly-details">
                       <h6>{hour.time.split(" ")[1]}</h6>
-                      <h4>{`${hour.temp_c.toString()}°C`}</h4>
+                      {tempIsToggled ? <h4>{`${hour.temp_f.toString()}°F`}</h4> : <h4>{`${hour.temp_c.toString()}°C`}</h4>}
                     </div>
                   );
                 })}
@@ -99,11 +115,11 @@ const LandingPage = () => {
               <div className="other-outlook-info">
                 <div className="info">
                   <h6>avg-Temperature:</h6>
-                  <h4>{getDailyDetails()?.forecastday[0]?.day ? `${getDailyDetails().forecastday[0].day.avgtemp_c}°C` : null}</h4>
+                  {tempIsToggled ? <h4>{getDailyDetails()?.forecastday[0]?.day ? `${getDailyDetails().forecastday[0].day.avgtemp_f}°F` : null}</h4> : <h4>{getDailyDetails()?.forecastday[0]?.day ? `${getDailyDetails().forecastday[0].day.avgtemp_c}°C` : null}</h4>}
                 </div>
                 <div className="info">
                   <h6>max-Wind:</h6>
-                  <h4>{getDailyDetails()?.forecastday[0]?.day ? `${getDailyDetails().forecastday[0].day.maxwind_kph} km/p` : null}</h4>
+                  {windIsToggled ? <h4>{getDailyDetails()?.forecastday[0]?.day ? `${getDailyDetails().forecastday[0].day.maxwind_mph} mph` : null}</h4> : <h4>{getDailyDetails()?.forecastday[0]?.day ? `${getDailyDetails().forecastday[0].day.maxwind_kph} kph` : null}</h4>}
                 </div>
                 <div className="info">
                   <h6>avg-Humidity:</h6>
@@ -118,21 +134,21 @@ const LandingPage = () => {
         </div>
 
         <div className="current-weather-condition">
-          {isIPLoading || isRealTWLoading ? <h2 className="loading">Loading...</h2> :
+          {isIPLoading || isRealTWLoading ? <Loading/> :
           <>
             <h4 className="header2">Current Conditions</h4>
             <div className="other-outlook-info outlook-two">
               <div className="info">
                 <h6>Wind:</h6>
-                <h4>{realTdata.current ? `${realTdata.current.wind_kph} km/h` : null}</h4>
+                {windIsToggled ? <h4>{realTdata.current ? `${realTdata.current.wind_mph} mph` : null}</h4> : <h4>{realTdata.current ? `${realTdata.current.wind_kph} kph` : null}</h4>}
               </div>
               <div className="info">
                 <h6>Visibility</h6>
-                <h4>{realTdata.current ? `${realTdata.current.vis_km} km` : null}</h4>
+                {visIsToggled ? <h4>{realTdata.current ? `${realTdata.current.vis_miles} mi` : null}</h4> : <h4>{realTdata.current ? `${realTdata.current.vis_km} km` : null}</h4>}
               </div>
               <div className="info">
                 <h6>Feels Like</h6>
-                <h4>{realTdata.current ? `${realTdata.current.feelslike_c}°C` : null}</h4>
+                {tempIsToggled ? <h4>{realTdata.current ? `${realTdata.current.feelslike_f}°F` : null}</h4> : <h4>{realTdata.current ? `${realTdata.current.feelslike_c}°C` : null}</h4>}
               </div>
               <div className="info">
                 <h6>Humidity:</h6>
@@ -165,8 +181,47 @@ const LandingPage = () => {
           </>}
         </div>
 
-        <div className="future-forecast">
-          {isIPLoading || isRealTWLoading ? <h2 className="loading">Loading...</h2> :
+        {/* { getDailyDetails()?.forecastday.map()?.day.avgtemp_c} */}
+
+
+        {/* {getDailyDetails()?.forecastday.day ? `${getDailyDetails().forecastday.map((daytime: any)=> {
+          return (
+            <div className="future-forecast">
+            {isIPLoading || isRealTWLoading ? <Loading/> :
+            <>
+              <h4 className="header2">Tomorrow</h4>
+              <div className="other-outlook-info outlook-two">
+                <div className="info">
+                  <h6>avg-Temperature:</h6>
+                  <h4>{daytime.day.avgtemp_c}°C</h4>
+                </div>
+                <div className="info">
+                  <h6>Chances of Rain: </h6>
+                  <h4>{daytime.day.daily_chance_of_rain}%</h4>
+                </div>
+                <div className="info max-wind">
+                  <h6>max-Wind:</h6>
+                  <h4>{daytime.day.maxwind_kph} k/h</h4>
+                </div>
+                <div className="info">
+                  <h6>avg-Visibility:</h6>
+                  <h4>{daytime.day.avgvis_km} km</h4>
+                </div>
+                <div className="info humidity">
+                  <h6>avg-Humidity:</h6>
+                  <h4>{daytime.day.avghumidity}%</h4>
+                </div>
+                <div className="info">
+                  <h6>Sunrise:</h6>
+                  <h4>{daytime.astro.sunrise}</h4>
+                </div>
+              </div>
+            </>}
+          </div>
+        )})}` : null} */}
+
+        {/* <div className="future-forecast">
+          {isIPLoading || isRealTWLoading ? <Loading/> :
           <>
             <h4 className="header2">Tomorrow</h4>
             <div className="other-outlook-info outlook-two">
@@ -175,7 +230,7 @@ const LandingPage = () => {
                 <h4>{getDailyDetails()?.forecastday[1]?.day ? `${getDailyDetails().forecastday[1].day.avgtemp_c}°C` : null}</h4>
               </div>
               <div className="info">
-                <h6>Raining Chance: </h6>
+                <h6>Chances of Rain: </h6>
                 <h4>{getDailyDetails()?.forecastday[1]?.day ? `${getDailyDetails().forecastday[1].day.daily_chance_of_rain}%` : null}</h4>
               </div>
               <div className="info max-wind">
@@ -196,10 +251,10 @@ const LandingPage = () => {
               </div>
             </div>
           </>}
-        </div>
+        </div> */}
 
-        <div className="future-forecast 2">
-          {isIPLoading || isRealTWLoading ? <h2 className="loading">Loading...</h2> :
+        {/* <div className="future-forecast 2">
+          {isIPLoading || isRealTWLoading ? <Loading/> :
           <>
             <h4 className="header2">2 days</h4>
             <div className="other-outlook-info outlook-two">
@@ -208,7 +263,7 @@ const LandingPage = () => {
                 <h4>{getDailyDetails()?.forecastday[2]?.day ? `${getDailyDetails().forecastday[2].day.avgtemp_c}°C` : null}</h4>
               </div>
               <div className="info">
-                <h6>Raining Chance: </h6>
+                <h6>Chances of Rain: </h6>
                 <h4>{getDailyDetails()?.forecastday[2]?.day ? `${getDailyDetails().forecastday[2].day.daily_chance_of_rain}%` : null}</h4>
               </div>
               <div className="info max-wind">
@@ -229,7 +284,7 @@ const LandingPage = () => {
               </div>
             </div>
           </>}
-        </div>
+        </div> */}
       </div>      
     </div>
   );

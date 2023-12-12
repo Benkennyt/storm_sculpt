@@ -1,5 +1,6 @@
 .landing-page-container{
     height: 100%;
+    position: relative;
 }
 .landing-page-container-1 {
     display: flex;
@@ -8,12 +9,7 @@
     justify-content: center;
     align-items: center;
 }
-.loading {
-   position: absolute;
-   top: 40%;
-   left: 50%;
-   transform: translate(-50%,-50%);
-}
+
 .geolocation {
     position: relative;
     display: flex;
@@ -29,6 +25,7 @@
 
 .geolocation svg {
     width: 200px;
+    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
 }
 
 .geolocation .city h1 {

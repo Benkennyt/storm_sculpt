@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import './Nav.css';
-import { LogoCloudIcon } from '../../assets/icons/SVG';
+import { LogoCloudIcon, SettingsIcon } from '../../assets/icons/SVG';
 import { fetchRealTimeWeather, fetchSearchAutoComplete} from "../../app/api/apiSlice2";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../app/stores/store";
@@ -28,8 +28,8 @@ const Nav = () => {
 
   const handleWantedSearchData = (event: any) => {
     setID(event.currentTarget.id)
-  }
 
+  }
 
   return (
     <div className='navbar'>
@@ -54,13 +54,12 @@ const Nav = () => {
             </div>
           </div>
         </div>
-        <ul>
-            <li><a href="">Refresh</a></li>
-            <li><a href="">Home</a></li>
-            <li><a href="">Weather Map</a></li>
-            <li><a href="">Settings</a></li>
-            <li><a href="">About</a></li>
-        </ul>
+        <div className="settings-btn">
+          <button>
+            <SettingsIcon/>
+          </button>
+        </div>
+        
     </div>
   )
 }
