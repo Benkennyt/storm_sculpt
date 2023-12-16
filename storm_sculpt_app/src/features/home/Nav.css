@@ -1,10 +1,10 @@
 .navbar {
-  padding: 15px;
   background-color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   box-shadow: 0 4px 2px -2px rgba(0, 0, 0, 0.2);
+  width: 100%;
 }
 
 .logo {
@@ -28,7 +28,11 @@
 }
 
 .logo svg {
-  fill: url(#MyGradient);
+  fill: transparent;
+  stroke-width: 10;
+  stroke: url(#MyGradient);
+  stroke-dashoffset: 0;
+  stroke-dasharray: 1250;
   width: 50px;
   height: 50px;
   cursor: pointer;
@@ -135,8 +139,12 @@
   text-transform: lowercase;
 }
 
+.search-suggestion-1-hiddden{
+  display: none;
+}
+
 .settings-btn{
-  width: 500px;
+  margin-right: 50px;
   display: flex;
   justify-content: left;
 }
@@ -154,7 +162,6 @@
 .settings-btn svg {
   width: 24px;
   cursor: pointer;
-  transform:d ;
 }
 
 
@@ -170,4 +177,14 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+
+/* media queries */
+
+
+@media (width <= 425px){
+   .navbar{
+    display: grid;
+   }
 }

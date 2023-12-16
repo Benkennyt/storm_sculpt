@@ -2,20 +2,26 @@
     height: 100%;
     position: relative;
 }
+
+.landing-page-loading{
+    position: absolute;
+    width: 100%;
+}
+
 .landing-page-container-1 {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
     padding: 30px;
+    padding-bottom: 0;
     justify-content: center;
-    align-items: center;
 }
 
 .geolocation {
     position: relative;
     display: flex;
     justify-content: space-between;
-    width: 490px;
-    height: 200px;
+    width: 500px;
+    min-height: 200px;
     border-radius: 20px;
     margin: 0px 30px 30px 0;
     margin-right: 0;
@@ -23,12 +29,8 @@
     box-shadow: inset 5px 5px 15px  rgba(0,0,0,0.3),inset -5px -5px 15px rgba(255,255,255,0.3);
 }
 
-.geolocation svg {
-    width: 200px;
-    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
-}
 
-.geolocation .city h1 {
+.geolocation .city h2 {
     font-weight: 800;
     margin-top: 0;
     margin-bottom: 0;
@@ -45,17 +47,22 @@
 
 .geolocation .degree p  {
     text-align: left;
-    font-size: 50px;
+    font-size: 40px;
     font-weight: 700;
-    margin-top: 30px;
+    margin-top: 60px;
     margin-bottom: 0;
+}
+
+.condition img{
+    filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+    
 }
 
 
 .weather-outlook {
     position: relative;
-    width: 600px;
-    height: 200px;
+    width: fit-content;
+    height: fit-content;
     border-radius: 20px;
     margin: 0px 0 30px 30px;
     padding: 20px;
@@ -77,29 +84,34 @@
 
 .hourly-details{
     border-right: solid 1px grey;
-    padding-right: 20px;
+    padding-right: 10px;
+    padding-left: 10px;
 }
 
 .hourly-details:last-child {
     border: none;
     padding: 0;
+    padding-left: 10px;
 }
 
 .hourly-details h6 {
     font-weight: 800;
     margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
 }
 
 .hourly-details h4 {
     font-weight: 800;
     margin-bottom: 0;
+    margin-top: 0;
+    text-align: center;
 }
 
 .other-outlook-info {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-top: 30px;
 }
 
 .other-outlook-info h6 {
@@ -112,31 +124,35 @@
 .other-outlook-info h4 {
     text-align: left;
     margin-top: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 0;
     font-weight: 800;
 }
 
 .landing-page-container-2 {
     display: flex;
+    justify-content: center;
+    padding: 0 30px 30px 30px;
 }
 
 .current-weather-condition {
     position: relative;
     width: 400px;
-    height: 150px;
+    height: fit-content;
     border-radius: 20px;
     margin: 0px 30px 0px 0px;
     padding: 20px;
     box-shadow: inset 5px 5px 15px  rgba(0,0,0,0.3),inset -5px -5px 15px rgba(255,255,255,0.3);
 }
 
-.outlook-two{
-    margin-top: 15px;
-
+.info{
+    margin-top: 20px;
+    text-align: left;
 }
 
+
+
 .header2 {
-    margin-top: 0;
+    margin-top: 10px;
     margin-bottom: 0;
     text-align: left;
     color:     rgba(98, 207, 244, 1) ;
@@ -145,7 +161,7 @@
 .future-forecast {
     position: relative;
     width: 310px;
-    height: 150px;
+    min-height: 140px;
     border-radius: 20px;
     margin: 0px 0px 0px 0px;
     padding: 20px;
@@ -156,9 +172,156 @@
     margin: 0px 0px 0px 30px;
 }
 
-.humidity {
-    margin-left: 20px;
+
+/* media queries */
+
+@media (width <= 1120px){
+   .avg-temp{
+    width: 50%;
+   }
+   .rain-chance{
+    width: 34%;
+   }
+
+   .max-wind{
+    width: 50%;
+   }
+
+   .avg-vis{
+    width: 34%;
+   }
+
+   .humidity{
+    width: 34%;
+   }
+
+   .current-weather-condition{
+    min-height: 210px;
+   }
+} 
+
+
+@media (width <= 1109px){
+
+    .landing-page-container-1 {
+        position: relative;
+        display: grid;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .geolocation{
+        width: 580px;
+    }
+
+    .weather-outlook{
+        margin-left: 0;
+    }
 }
-.max-wind {
-    margin-right: 10px;
+
+@media (width <= 1109px){
+
+    .current-weather-condition{
+        min-height: 220px;
+    }
 }
+
+@media (width <= 1040px){
+    .wind{
+        width: 30%;
+    }
+
+    .vis{
+        width: 30%;
+    }
+    
+    .vis{
+        width: 30%;
+    }
+
+    .hum{
+        width: 30%;
+    }
+
+    .uv{
+        width: 59%;
+    }
+}
+
+@media (width <= 953px){
+    .astronomy .info {
+        margin-right:10px ;
+    }
+
+    .rain-chance{
+    width: 40%;
+    }
+
+    .avg-vis{
+    width: 40%;
+    }
+
+    .humidity{
+    width: 40%;
+    }
+}
+
+
+@media (width <= 827px){
+    .current-weather-condition{
+        min-height: 245px;
+    }
+}
+
+
+/* phones */
+
+
+@media (width <= 425px){
+    .geolocation{
+        width: 82vw;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .weather-outlook{
+        width: 82vw;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+    }
+
+    .hourly-details:first-child{
+        padding-left: 0;
+    }
+
+    .landing-page-container-1{
+        padding: 0;
+        align-items: center;
+    }
+
+    .landing-page-container-2{
+        display: grid;
+        margin: 0;
+        padding: 0;
+        align-items: center;
+    }
+
+    .current-weather-condition{
+        width: 82vw;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 20px;
+    }
+
+    .future-forecast{
+        width: 82vw;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-bottom: 20px !important;
+    }
+}
+
+

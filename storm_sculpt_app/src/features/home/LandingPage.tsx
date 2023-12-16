@@ -1,13 +1,12 @@
 import React, { useEffect, useRef , useState} from "react";
 import "./LandingPage.css";
 import Nav from "./Nav";
-import { LogoCloudIcon, SunIcon } from "../../assets/icons/SVG";
 import { fetchRealTimeWeather, fetchIPDetails} from "../../app/api/apiSlice2";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../app/stores/store";
-import WeatherIcon from "./WeatherIcon";
 import Loading from "../../app/general/Loading";
 import Settings from "../settings/Settings";
+import useWindowResize from "../../Hooks/useWindowResize";
 
 
 
@@ -15,6 +14,8 @@ const LandingPage = () => {
   const [tempIsToggled, setTempIsToggled] = useState(false);
   const [windIsToggled, setWindIsToggled] = useState(false);
   const [visIsToggled, setVisIsToggled] = useState(false);
+  const [settingsClicked, setSettingsClicked] = useState(false);
+  const {width, height} = useWindowResize();
 
 
   const dispatch = useAppDispatch()
@@ -37,33 +38,54 @@ const LandingPage = () => {
   }, [IP])
 
   const gethourlyDetails = () => {
-    if(realTdata?.forecast?.forecastday[0]) {
+    if(realTdata?.forecast?.forecastday[0] && width! >= 500) {
         const originalArray = realTdata.forecast.forecastday[0].hour;
         const newArray = [...originalArray].filter(( hour,index) => {
           return index % 3 === 0 && index != 0
         });
       return newArray
+    } else if(realTdata?.forecast?.forecastday[0] && width! <=    499) {
+      const originalArray = realTdata.forecast.forecastday[0].hour;
+      const newArray = [...originalArray].filter(( hour,index) => {
+       return index < 3
+      });
+      return newArray
     } else {
       return null
     }
-  }
+}
 
   const getDailyDetails = () => {
-    if(realTdata && realTdata.forecast && realTdata.forecast.forecastday ) {
+    if(realTdata && realTdata.forecast ) {
         return realTdata.forecast
     } else {
       return null
     }
   }
 
+  const getDailyDetails2 = () => {
+    if(realTdata && realTdata.forecast && realTdata.forecast.forecastday ) {
+     const originalArray = realTdata.forecast.forecastday
+      const newArray = [...originalArray].filter(( hour,index) => {
+        return  index != 0
+      });
+    return newArray
 
-  console.log(getDailyDetails()?.forecastday?.map().day.avgtemp_c)
 
+    } else {
+      return null
+    }
+  }
+
+  console.log(width)
   
   return (
     <div className="landing-page-container">
-      <Nav />
+      <Nav 
+        setSettingsClicked={setSettingsClicked}
+        settingsClicked={settingsClicked} />
       <Settings 
+        settingsClicked={settingsClicked}
         tempIsToggled={tempIsToggled} 
         onToggleTemp={() => setTempIsToggled(!tempIsToggled)}
         windIsToggled={windIsToggled} 
@@ -71,14 +93,19 @@ const LandingPage = () => {
         visIsToggled={visIsToggled} 
         onToggleVis={() => setVisIsToggled(!visIsToggled)}
         />
+
+      {isIPLoading || isRealTWLoading ? <div className="landing-page-loading">
+        <Loading/> 
+      </div>:
+       <>
       <div className="landing-page-container-1">
         <div className="geolocation">
-          {isIPLoading || isRealTWLoading ? <Loading/> : 
-          <>
             <div className="city">
-              <h1>{realTdata?.location?.name ? `${realTdata?.location?.name}` : null}{realTdata?.location?.country  ? ',' : null} 
-              </h1>
-              {realTdata?.location?.country ? <h1>{realTdata?.location?.country}</h1> : null}
+              <div className="name">
+                <h2>{realTdata?.location?.name ? `${realTdata?.location?.name}` : null}{realTdata?.location?.country  ? ',' : null} 
+                </h2>
+                {realTdata?.location?.country ? <h2>{realTdata?.location?.country}</h2> : null}
+              </div>
               <div className="date-time">
                 <div className="time">
                   <p>{timeDate?.localtime.split(" ")[1]}</p>
@@ -92,21 +119,21 @@ const LandingPage = () => {
                 <p>{realTdata && realTdata.current ? `${realTdata.current.temp_c}°C` : null}</p>}
               </div>
             </div>
-            <SunIcon />
-          </>}
+            <div className="condition">
+              <img src= {realTdata && realTdata.current && realTdata.current.condition ? realTdata.current.condition.icon  : null} alt="condition icon" />
+            
+            </div>
         </div>
 
 
         <div className="weather-outlook">
-          {isIPLoading || isRealTWLoading ? 
-            <Loading/> :
-            <>
               <h4 className="header">Weather's Outlook</h4><div className="outlook-time-degree">
 
                 {gethourlyDetails()?.map((hour, index) => {
                   return (
                     <div key={index} className="hourly-details">
                       <h6>{hour.time.split(" ")[1]}</h6>
+                      <img src={hour.condition.icon} alt="" />
                       {tempIsToggled ? <h4>{`${hour.temp_f.toString()}°F`}</h4> : <h4>{`${hour.temp_c.toString()}°C`}</h4>}
                     </div>
                   );
@@ -130,162 +157,86 @@ const LandingPage = () => {
                   <h4>{getDailyDetails()?.forecastday[0]?.day ? `${getDailyDetails().forecastday[0].day.daily_chance_of_rain}%` : null}</h4>
                 </div>
               </div>
-            </>}
         </div>
+      </div>
 
+      <div className="landing-page-container-2">
         <div className="current-weather-condition">
-          {isIPLoading || isRealTWLoading ? <Loading/> :
-          <>
-            <h4 className="header2">Current Conditions</h4>
-            <div className="other-outlook-info outlook-two">
-              <div className="info">
-                <h6>Wind:</h6>
-                {windIsToggled ? <h4>{realTdata.current ? `${realTdata.current.wind_mph} mph` : null}</h4> : <h4>{realTdata.current ? `${realTdata.current.wind_kph} kph` : null}</h4>}
+              <h4 className="header2">Current Conditions</h4>
+              <div className="other-outlook-info outlook-two">
+                <div className="info wind">
+                  <h6>Wind:</h6>
+                  {windIsToggled ? <h4>{realTdata.current ? `${realTdata.current.wind_mph} mph` : null}</h4> : <h4>{realTdata.current ? `${realTdata.current.wind_kph} kph` : null}</h4>}
+                </div>
+                <div className="info vis">
+                  <h6>Visibility</h6>
+                  {visIsToggled ? <h4>{realTdata.current ? `${realTdata.current.vis_miles} mi` : null}</h4> : <h4>{realTdata.current ? `${realTdata.current.vis_km} km` : null}</h4>}
+                </div>
+                <div className="info fl">
+                  <h6>Feels Like</h6>
+                  {tempIsToggled ? <h4>{realTdata.current ? `${realTdata.current.feelslike_f}°F` : null}</h4> : <h4>{realTdata.current ? `${realTdata.current.feelslike_c}°C` : null}</h4>}
+                </div>
+                <div className="info hum">
+                  <h6>Humidity:</h6>
+                  <h4>{realTdata.current ? `${realTdata.current.humidity}%` : null}</h4>
+                </div>
+                <div className="info uv">
+                  <h6>UV Index:</h6>
+                  <h4>{realTdata.current ? `${realTdata.current.uv}` : null}</h4>
+                </div>
               </div>
-              <div className="info">
-                <h6>Visibility</h6>
-                {visIsToggled ? <h4>{realTdata.current ? `${realTdata.current.vis_miles} mi` : null}</h4> : <h4>{realTdata.current ? `${realTdata.current.vis_km} km` : null}</h4>}
-              </div>
-              <div className="info">
-                <h6>Feels Like</h6>
-                {tempIsToggled ? <h4>{realTdata.current ? `${realTdata.current.feelslike_f}°F` : null}</h4> : <h4>{realTdata.current ? `${realTdata.current.feelslike_c}°C` : null}</h4>}
-              </div>
-              <div className="info">
-                <h6>Humidity:</h6>
-                <h4>{realTdata.current ? `${realTdata.current.humidity}%` : null}</h4>
-              </div>
-              <div className="info">
-                <h6>UV Index:</h6>
-                <h4>{realTdata.current ? `${realTdata.current.uv}` : null}</h4>
-              </div>
-            </div>
-            <h4 className="header2">Astronomy</h4>
-            <div className="other-outlook-info outlook-two">
-              <div className="info">
-                <h6>Sunrise:</h6>
-                <h4>{getDailyDetails()?.forecastday[0]?.astro ? `${getDailyDetails().forecastday[0].astro.sunrise}` : null}</h4>
-              </div>
-              <div className="info">
-                <h6>Sunset:</h6>
-                <h4>{getDailyDetails()?.forecastday[0]?.astro ? `${getDailyDetails().forecastday[0].astro.sunset}` : null}</h4>
-              </div>
-              <div className="info">
-                <h6>Moonset:</h6>
-                <h4>{getDailyDetails()?.forecastday[0]?.astro ? `${getDailyDetails().forecastday[0].astro.moonset}` : null}</h4>
-              </div>
-              <div className="info">
-                <h6>Moon Phase:</h6>
-                <h4>{getDailyDetails()?.forecastday[0]?.astro ? `${getDailyDetails().forecastday[0].astro.moon_phase}` : null}</h4>
-              </div>
-            </div>
-          </>}
-        </div>
-
-        {/* { getDailyDetails()?.forecastday.map()?.day.avgtemp_c} */}
-
-
-        {/* {getDailyDetails()?.forecastday.day ? `${getDailyDetails().forecastday.map((daytime: any)=> {
-          return (
-            <div className="future-forecast">
-            {isIPLoading || isRealTWLoading ? <Loading/> :
-            <>
-              <h4 className="header2">Tomorrow</h4>
+              <h4 className="header2 astronomy">Astronomy</h4>
               <div className="other-outlook-info outlook-two">
                 <div className="info">
-                  <h6>avg-Temperature:</h6>
-                  <h4>{daytime.day.avgtemp_c}°C</h4>
-                </div>
-                <div className="info">
-                  <h6>Chances of Rain: </h6>
-                  <h4>{daytime.day.daily_chance_of_rain}%</h4>
-                </div>
-                <div className="info max-wind">
-                  <h6>max-Wind:</h6>
-                  <h4>{daytime.day.maxwind_kph} k/h</h4>
-                </div>
-                <div className="info">
-                  <h6>avg-Visibility:</h6>
-                  <h4>{daytime.day.avgvis_km} km</h4>
-                </div>
-                <div className="info humidity">
-                  <h6>avg-Humidity:</h6>
-                  <h4>{daytime.day.avghumidity}%</h4>
-                </div>
-                <div className="info">
                   <h6>Sunrise:</h6>
-                  <h4>{daytime.astro.sunrise}</h4>
+                  <h4>{getDailyDetails()?.forecastday[0]?.astro ? `${getDailyDetails().forecastday[0].astro.sunrise}` : null}</h4>
+                </div>
+                <div className="info">
+                  <h6>Sunset:</h6>
+                  <h4>{getDailyDetails()?.forecastday[0]?.astro ? `${getDailyDetails().forecastday[0].astro.sunset}` : null}</h4>
+                </div>
+                <div className="info">
+                  <h6>Moonset:</h6>
+                  <h4>{getDailyDetails()?.forecastday[0]?.astro ? `${getDailyDetails().forecastday[0].astro.moonset}` : null}</h4>
                 </div>
               </div>
-            </>}
           </div>
-        )})}` : null} */}
 
-        {/* <div className="future-forecast">
-          {isIPLoading || isRealTWLoading ? <Loading/> :
-          <>
-            <h4 className="header2">Tomorrow</h4>
-            <div className="other-outlook-info outlook-two">
-              <div className="info">
-                <h6>avg-Temperature:</h6>
-                <h4>{getDailyDetails()?.forecastday[1]?.day ? `${getDailyDetails().forecastday[1].day.avgtemp_c}°C` : null}</h4>
-              </div>
-              <div className="info">
-                <h6>Chances of Rain: </h6>
-                <h4>{getDailyDetails()?.forecastday[1]?.day ? `${getDailyDetails().forecastday[1].day.daily_chance_of_rain}%` : null}</h4>
-              </div>
-              <div className="info max-wind">
-                <h6>max-Wind:</h6>
-                <h4>{getDailyDetails()?.forecastday[1]?.day ? `${getDailyDetails().forecastday[1].day.maxwind_kph} k/h` : null}</h4>
-              </div>
-              <div className="info">
-                <h6>avg-Visibility:</h6>
-                <h4>{getDailyDetails()?.forecastday[1]?.day ? `${getDailyDetails().forecastday[1].day.avgvis_km} km` : null}</h4>
-              </div>
-              <div className="info humidity">
-                <h6>avg-Humidity:</h6>
-                <h4>{getDailyDetails()?.forecastday[1]?.day ? `${getDailyDetails().forecastday[1].day.avghumidity}%` : null}</h4>
-              </div>
-              <div className="info">
-                <h6>Sunrise:</h6>
-                <h4>{getDailyDetails()?.forecastday[1]?.astro ? `${getDailyDetails().forecastday[1].astro.sunrise}` : null}</h4>
-              </div>
-            </div>
-          </>}
-        </div> */}
 
-        {/* <div className="future-forecast 2">
-          {isIPLoading || isRealTWLoading ? <Loading/> :
-          <>
-            <h4 className="header2">2 days</h4>
-            <div className="other-outlook-info outlook-two">
-              <div className="info">
-                <h6>avg-Temperature:</h6>
-                <h4>{getDailyDetails()?.forecastday[2]?.day ? `${getDailyDetails().forecastday[2].day.avgtemp_c}°C` : null}</h4>
-              </div>
-              <div className="info">
-                <h6>Chances of Rain: </h6>
-                <h4>{getDailyDetails()?.forecastday[2]?.day ? `${getDailyDetails().forecastday[2].day.daily_chance_of_rain}%` : null}</h4>
-              </div>
-              <div className="info max-wind">
-                <h6>max-Wind:</h6>
-                <h4>{getDailyDetails()?.forecastday[2]?.day ? `${getDailyDetails().forecastday[2].day.maxwind_kph} k/h` : null}</h4>
-              </div>
-              <div className="info">
-                <h6>avg-Visibility:</h6>
-                <h4>{getDailyDetails()?.forecastday[2]?.day ? `${getDailyDetails().forecastday[2].day.avgvis_km} km` : null}</h4>
-              </div>
-              <div className="info humidity">
-                <h6>avg-Humidity:</h6>
-                <h4>{getDailyDetails()?.forecastday[2]?.day ? `${getDailyDetails().forecastday[2].day.avghumidity}%` : null}</h4>
-              </div>
-              <div className="info">
-                <h6>Sunrise:</h6>
-                <h4>{getDailyDetails()?.forecastday[2]?.astro ? `${getDailyDetails().forecastday[2].astro.sunrise}` : null}</h4>
-              </div>
+          {getDailyDetails2()?.map((daytime: any, index)=> {
+            return (
+              <div key={index} className="future-forecast">
+                <h4 className="header2">{index === 0 ? 'Tomorrow' : index === 1 ? '2-days' : null}</h4>
+                <div className="other-outlook-info outlook-two">
+                  <div className="info info avg-temp" >
+                    <h6>avg-Temperature:</h6>
+                    <h4>{daytime.day.avgtemp_c}°C</h4>
+                  </div>
+                  <div className="info info2 rain-chance">
+                    <h6>Chances of Rain: </h6>
+                    <h4>{daytime.day.daily_chance_of_rain}%</h4>
+                  </div>
+                  <div className=" info info2 max-wind">
+                    <h6>max-Wind:</h6>
+                    <h4>{daytime.day.maxwind_kph} k/h</h4>
+                  </div>
+                  <div className="info info2 avg-vis">
+                    <h6>avg-Visibility:</h6>
+                    <h4>{daytime.day.avgvis_km} km</h4>
+                  </div>
+                  <div className="info info2 sunrise">
+                    <h6>Sunrise:</h6>
+                    <h4>{daytime.astro.sunrise}</h4>
+                  </div>
+                  <div className="info info2 humidity">
+                    <h6>avg-Humidity:</h6>
+                    <h4>{daytime.day.avghumidity}%</h4>
+                  </div>
+                </div>
             </div>
-          </>}
-        </div> */}
-      </div>      
+          )})}
+      </div>
+      </>}
     </div>
   );
 };

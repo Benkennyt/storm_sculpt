@@ -2,10 +2,10 @@ import React from 'react';
 import './Settings.css'
 
 const Settings = (props: any) => {
-  const {tempIsToggled, onToggleTemp,windIsToggled, onToggleWind,visIsToggled, onToggleVis} = props
+  const {tempIsToggled, onToggleTemp,windIsToggled, onToggleWind,visIsToggled, onToggleVis, settingsClicked} = props
   return (
-    <div className='settings-container'>
-      <h2>Units</h2>
+    <div className={settingsClicked ? 'settings-container' : 'settings-container-hidden'}>
+      <h2 className={settingsClicked ? 'h2h-hidden' : ''}>Units</h2>
 
       <div className="all-switch">
         <div className='switch'>

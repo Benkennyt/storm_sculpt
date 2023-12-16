@@ -4,12 +4,17 @@ import { LogoCloudIcon, SettingsIcon } from '../../assets/icons/SVG';
 import { fetchRealTimeWeather, fetchSearchAutoComplete} from "../../app/api/apiSlice2";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../app/stores/store";
+import { getValue } from "@testing-library/user-event/dist/utils";
+import { eventNames } from "process";
 
-const Nav = () => {
-  const [ID, setID] = useState(Number)
+const Nav = (props: any) => {
+  const [search, setSearch] = useState('')
+  const {setSettingsClicked, settingsClicked} = props
+  const [ID, setID] = useState('')
   const dispatch = useAppDispatch()
-  const {data, isSearchLoading} = useSelector((state:any) => state.WeatherDetails)
+  const {data, isSearchLoading, isRealTWLoading} = useSelector((state:any) => state.WeatherDetails)
   const searchData = data?.searchdata
+  const realTdata = data.realTimedata
 
   useEffect(() => {
     if (ID && searchData) {
@@ -18,18 +23,35 @@ const Nav = () => {
   }, [ID])
 
   const handleChange = (event: { target: { value: any; }; }) => {
-    let value = event?.target?.value
-    if(value) {
-      return (
-        dispatch(fetchSearchAutoComplete(value))
-      )
+    setSearch(event.target.value)
+
+    if(search != '') {
+      dispatch(fetchSearchAutoComplete(search))
     }
+
+    if(ID != '') {
+      setID('')
+    }
+
   }
 
   const handleWantedSearchData = (event: any) => {
     setID(event.currentTarget.id)
+    setSearch('')
 
   }
+
+  const handleSettingsButton = () => {
+    if(settingsClicked) {
+      setSettingsClicked(false)
+    } else {
+      setSettingsClicked(true)
+    }
+  }
+
+  
+  
+  console.log(search)
 
   return (
     <div className='navbar'>
@@ -38,9 +60,9 @@ const Nav = () => {
             <LogoCloudIcon/>
         </div>
         <div className="search-bar-container">
-          <input onChange={handleChange} className='search-bar' type="text" placeholder='Find Weather for...'/>
+          <input onChange={handleChange} value={search} className='search-bar' type="text" placeholder='Find Weather for...'/>
           <div className="search-suggestions">
-            <div className="search-suggestions-1">
+            <div className={search === '' ? 'search-suggestion-1-hiddden' :"search-suggestions-1"}>
               {searchData && searchData.length ? searchData.map((search: any, index: any) => {
                 return (
                   <button id={index}  key={index} onClick={handleWantedSearchData}>
@@ -55,7 +77,7 @@ const Nav = () => {
           </div>
         </div>
         <div className="settings-btn">
-          <button>
+          <button onClick={handleSettingsButton}>
             <SettingsIcon/>
           </button>
         </div>

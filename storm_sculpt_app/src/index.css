@@ -12,6 +12,7 @@ code {
     monospace;
 }
 
+
 @font-face {
   font-family: Mulish;
   src: url(../src/assets/fonts/Mulish/Mulish-VariableFont_wght.ttf);
@@ -31,4 +32,15 @@ code {
 @font-face {
   font-family: Mulish-r;
   src: url(../src/assets/fonts/Mulish/static/Mulish-Light.ttf);
+}
+
+
+/* media queries */
+
+@media (width >= 1518px) {
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
