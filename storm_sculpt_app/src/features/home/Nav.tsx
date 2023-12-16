@@ -49,9 +49,6 @@ const Nav = (props: any) => {
     }
   }
 
-  
-  
-  console.log(search)
 
   return (
     <div className='navbar'>

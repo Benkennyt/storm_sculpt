@@ -7,6 +7,7 @@ import { useAppDispatch } from "../../app/stores/store";
 import Loading from "../../app/general/Loading";
 import Settings from "../settings/Settings";
 import useWindowResize from "../../Hooks/useWindowResize";
+import ErrorImage from '../../assets/pexels-vie-studio-4439425.jpg'
 
 
 
@@ -19,7 +20,8 @@ const LandingPage = () => {
 
 
   const dispatch = useAppDispatch()
-  const {data, isIPLoading,isRealTWLoading} = useSelector((state:any) => state.WeatherDetails)
+  const {data, isIPLoading,isRealTWLoading, isIPError,
+    isRealTWError} = useSelector((state:any) => state.WeatherDetails)
   const IP = data.ipdata.ip
   const count = useRef(0)
   const realTdata = data.realTimedata
@@ -95,7 +97,7 @@ const LandingPage = () => {
 
       {isIPLoading || isRealTWLoading ? <div className="landing-page-loading">
         <Loading/> 
-      </div>:
+      </div> : isRealTWError || isIPError ? <div className="error-image"><img src={ErrorImage} alt="" /></div> :
        <>
       <div className="landing-page-container-1">
         <div className="geolocation">
