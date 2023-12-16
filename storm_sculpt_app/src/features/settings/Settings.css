@@ -20,9 +20,10 @@
     overflow: hidden;
 }
 
-.settings-container h2 {
+.settings-container h2, .settings-container-hidden h2 {
     padding-top: 10px;
     margin: 0;
+    text-align: center;
 }
 
 
@@ -46,10 +47,11 @@
 
 .switch-for h3 {
     margin-bottom: 10px;
+    font-size: 18px;
 }
 
 .switch label {
-    width: 300px;
+    width: 200px;
     height: 30px;
     display: block;
     position: relative;
@@ -61,11 +63,11 @@
 
 .switch label:after {
     content: '';
-    width: 142px;
+    width: 100px;
     height: 25px;
     position: absolute;
     top: 2.5px;
-    left: 4px;
+    left: 3px;
     background: white;
     border-radius: 15px;
     cursor: pointer;
@@ -83,7 +85,7 @@
     background-color: #242424;
 }
 .switch input:checked + label:after {
-    transform: translateX(106%);
+    transform: translateX(94%);
 }
 
 .switch label:active:after {
@@ -101,6 +103,7 @@
 
 .switch-btn-name .name-dv h3 {
     margin: auto;
+    font-size: 15px;
  
 }
 
@@ -109,3 +112,17 @@
     display: flex;
 }
 
+/* media queries */
+
+@media (width <= 697px) {
+
+    .settings-container {
+        height: 310px;
+    }
+
+    .all-switch {
+        display: grid;
+        justify-content: center;
+        padding: 0 30px 0 30px;
+    }
+}

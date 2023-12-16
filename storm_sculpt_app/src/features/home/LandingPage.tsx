@@ -38,16 +38,16 @@ const LandingPage = () => {
   }, [IP])
 
   const gethourlyDetails = () => {
-    if(realTdata?.forecast?.forecastday[0] && width! >= 500) {
+    if(realTdata?.forecast?.forecastday[0] && width! >= 597) {
         const originalArray = realTdata.forecast.forecastday[0].hour;
         const newArray = [...originalArray].filter(( hour,index) => {
           return index % 3 === 0 && index != 0
         });
       return newArray
-    } else if(realTdata?.forecast?.forecastday[0] && width! <=    499) {
+    } else if(realTdata?.forecast?.forecastday[0] && width! <=    596) {
       const originalArray = realTdata.forecast.forecastday[0].hour;
       const newArray = [...originalArray].filter(( hour,index) => {
-       return index < 3
+        return index % 7 === 0 && index != 0
       });
       return newArray
     } else {
@@ -77,7 +77,6 @@ const LandingPage = () => {
     }
   }
 
-  console.log(width)
   
   return (
     <div className="landing-page-container">

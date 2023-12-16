@@ -183,8 +183,26 @@
 /* media queries */
 
 
-@media (width <= 425px){
-   .navbar{
+@media (width <= 450px){
+  .navbar{
+    position: relative;
     display: grid;
-   }
+    justify-content: center;
+    align-items: center;
+  }
+
+  .logo{
+    margin-left: 0;
+  }
+
+  .settings-btn{
+    position: absolute;
+    margin: 10px;
+    bottom: 0;
+    right: 0;
+  }
+
+  .search-bar-container {
+    margin-bottom: 20px;
+  }
 }

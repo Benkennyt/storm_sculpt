@@ -277,7 +277,7 @@
 /* phones */
 
 
-@media (width <= 425px){
+@media (width <= 450px){
     .geolocation{
         width: 82vw;
         margin-left: auto;
