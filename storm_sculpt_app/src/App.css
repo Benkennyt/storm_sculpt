@@ -1,5 +1,6 @@
 .App {
   max-width: 1518px;
+  min-width: 100vw;
 }
 
 .App-logo {

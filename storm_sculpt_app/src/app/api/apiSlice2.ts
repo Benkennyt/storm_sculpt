@@ -1,6 +1,7 @@
 import {createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import agent from './agent';
 
+
 export const fetchRealTimeWeather = createAsyncThunk<any, string>('fetchRealTimeWeather',async (ip, thunkAPI) => {
     try {
         return await agent.LocationDetails.RealTimeweatherDetails(ip)
